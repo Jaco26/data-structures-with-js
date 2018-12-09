@@ -107,6 +107,33 @@ class SinglyLinkedList {
     return traverser;
   }
 
+  insert(index, val) {
+    if (index < 0 || index > this.length) return false;
+    else if (index === this.length) return !!this.push(val); // !! is a boolean operator that "double negates" whatever is returned --- an array --- coerced boolean
+    else if (index === 0) return !!this.unshift(val);
+    const nodeBeforeIndex = this.get(index - 1);
+    if (nodeBeforeIndex) {
+      const newNode = new Node(val);
+      newNode.next = nodeBeforeIndex.next
+      nodeBeforeIndex.next = newNode;
+      this.length += 1;
+      return true
+    }
+  }
+
+  remove(index) {
+    if (index < 0 || index > this.length) return undefined;
+    else if (index === this.length - 1) return this.pop();
+    else if (index === 0) return this.shift();
+    const nodeBeforeIndex = this.get(index - 1);
+    if (nodeBeforeIndex) {
+      const removedNode = nodeBeforeIndex.next;
+      nodeBeforeIndex.next = removedNode.next;
+      this.length -= 1;
+      return removedNode;
+    }
+  }
+
 }
 
 const list = new SinglyLinkedList();
