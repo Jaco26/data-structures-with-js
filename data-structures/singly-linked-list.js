@@ -43,6 +43,17 @@ class SinglyLinkedList {
     this.tail = null;
   }
 
+  toArr(full = false) {
+    const accum = [];
+    let current = this.head;
+    for (let i = 0; i < this.length; i++) {
+      const value = full ? current : current.val;
+      accum.push(value);
+      current = current.next;
+    }
+    return accum;
+  }
+
   push(val) {
     const node = new Node(val);
     if (!this.head) {
@@ -134,31 +145,77 @@ class SinglyLinkedList {
     }
   }
 
+
+  reverse() {
+    // reverse the pointers
+    // make "next" point to "val"
+    // start at the head
+    let n = this.length;
+    let oldBigSpoon = this.head;
+    let newBigSpoon = oldBigSpoon.next;
+    let nextBigSpoon = newBigSpoon.next;
+    newBigSpoon.next = oldBigSpoon;
+    oldBigSpoon = newBigSpoon;
+    newBigSpoon = nextBigSpoon;
+    nextBigSpoon = nextBigSpoon.next
+    
+
+
+
+    // let newBigSpoon = currentNode.next;
+    // let oldBigSpoon = currentNode;
+    // while (n > 0) {
+    //   newBigSpoon.next = currentNode;
+    //   currentNode = newBigSpoon.next;
+    //   oldBigSpoon = currentNode;
+    //   n--;
+    // }
+    console.log('done');
+    
+    return this;
+  }
+
 }
 
 const list = new SinglyLinkedList();
-// list.push('Hi');
-// list.push('How are ya??');
-// list.push(99);
 
-// console.log(list);
-list.unshift(84);
-// console.log(list);
-list.unshift(73);
-list.push(99);
-console.log(list.head.val);
-console.log(list.head.next.val);
-console.log(list.head.next.next.val);
+list.push('Hello')
+list.push('how')
+list.insert(2, 'are')
+list.push('You')
+list.unshift('Hey')
 
-console.log(list.length);
-console.log(list.get(3));
+
+console.log(list.toArr());
+// console.log('head ->', list.head);
+// console.log('tail ->', list.tail);
 
 
 
+const reversed = list.reverse();
 
+console.log(reversed.toArr());
 // console.log(list.head.val);
-// console.log(list.pop());
-// console.log(list.shift().val);
-// console.log(list.head.val);
-// list.unshift('mem eme me');
-// console.log(list.head);
+// console.log(list.tail.val);
+
+
+
+// this.tail = this.head;
+// let walker = this.head;
+// let next = walker.next;
+
+
+
+// reverse() {
+//   this.head = this.tail;
+//   let next;
+//   let prev;
+//   let current = this.head;
+//   for (let i = 0; i < this.length; i++) {
+//     next = current.next;
+//     current.next = prev;
+//     prev = current;
+//     current = next;
+//   }
+//   return this;
+// }
