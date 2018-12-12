@@ -147,31 +147,18 @@ class SinglyLinkedList {
 
 
   reverse() {
-    // reverse the pointers
-    // make "next" point to "val"
-    // start at the head
-    let n = this.length;
-    let oldBigSpoon = this.head;
-    let newBigSpoon = oldBigSpoon.next;
-    let nextBigSpoon = newBigSpoon.next;
-    newBigSpoon.next = oldBigSpoon;
-    oldBigSpoon = newBigSpoon;
-    newBigSpoon = nextBigSpoon;
-    nextBigSpoon = nextBigSpoon.next
-    
-
-
-
-    // let newBigSpoon = currentNode.next;
-    // let oldBigSpoon = currentNode;
-    // while (n > 0) {
-    //   newBigSpoon.next = currentNode;
-    //   currentNode = newBigSpoon.next;
-    //   oldBigSpoon = currentNode;
-    //   n--;
-    // }
-    console.log('done');
-    
+    // 
+    let node = this.head;
+    this.head = this.tail;
+    this.tail = node;
+    let next;
+    let prev = null; // we need to make sure the tail of out list is "null"
+    for (let i = 0; i < this.length; i++) {
+      next = node.next;
+      node.next = prev;
+      prev = node;
+      node = next;
+    }
     return this;
   }
 
@@ -185,37 +172,7 @@ list.insert(2, 'are')
 list.push('You')
 list.unshift('Hey')
 
-
 console.log(list.toArr());
-// console.log('head ->', list.head);
-// console.log('tail ->', list.tail);
-
-
 
 const reversed = list.reverse();
-
 console.log(reversed.toArr());
-// console.log(list.head.val);
-// console.log(list.tail.val);
-
-
-
-// this.tail = this.head;
-// let walker = this.head;
-// let next = walker.next;
-
-
-
-// reverse() {
-//   this.head = this.tail;
-//   let next;
-//   let prev;
-//   let current = this.head;
-//   for (let i = 0; i < this.length; i++) {
-//     next = current.next;
-//     current.next = prev;
-//     prev = current;
-//     current = next;
-//   }
-//   return this;
-// }
