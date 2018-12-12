@@ -19,6 +19,23 @@
       - Indexed in order
       - Insertion and deletion can be expensive
       - Can quickly be accessed at a specific index
+
+  - Big O of Singly Linked Lists
+    - Insertion: O(1)
+        Array average is O(n) because everything to the right of the insertion
+        must be reindexed
+    - Removal: it depends... O(1) from beginning or O(n) from end
+    - Searching: O(n) worst case
+    - Accessing: O(n) worst case
+        Array has "random access" --- time to access random indexes is constant
+        but indexing takes time
+
+    * Singly Linked Lists are an excellent alternative to arrays
+    when insertion and deletion at the beginning are frequently required
+    * Arrays contain a built-in index whereas Linked Lists do not
+    * The idea of a list data structure that consists of nodes
+    is the foundation of other data structures like Stacks and Queues
+
 */
 
 class Node {
@@ -147,7 +164,6 @@ class SinglyLinkedList {
 
 
   reverse() {
-    // 
     let node = this.head;
     this.head = this.tail;
     this.tail = node;
