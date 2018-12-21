@@ -10,6 +10,12 @@
   - Undo / Redo functionality (like in photoshop)
   - Routing (the history object) is treated like a stack
   - We'll use Stacks in Trees and Graphs
+
+  Big O of Stacks:
+  - Insertion O(1) ...IMPORTANT
+  - Removal O(1) ...IMPORTANT
+  - Searching O(n) ...not important operation
+  - Access O(n) ...not important operation
 */
 
 // THERE IS MORE THAN ONE WAY TO IMPLEMENT A STACK
@@ -87,4 +93,7 @@ stack.push('hello');
 console.log(stack.toArr())
 console.log(stack);
 console.log(stack.pop());
+console.log(stack.pop());
+console.log(stack.pop());
+console.log(stack);
 
