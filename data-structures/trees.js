@@ -36,11 +36,27 @@
 
   SEARCHING A BINARY SEARCH TREE
   - compare and move to right or left
+
+  Big O of Binary Search Tree
+  - Insertion O(log n) 
+  - Searching O(log n) 
+  
+  as you double the number of nodes, you increase the steps
+  required by "insert" and "find" by one
+
+  O(log n) is best case and average Big O
+  ...NOT GUARANTEED...
+  - Because, some binary search tree configurations are slow
+    - one with one "branch"––where every node to the right is larger 
+      than the one to its left
+      - this would be O(n)
+
 */
 
 class Node {
-  constructor() {
+  constructor(value, otherStuff) {
     this.value = value;
+    this.otherStuff = otherStuff;
     this.left = null;
     this.right = null;
   }
@@ -51,15 +67,71 @@ class BinarySearchTree {
     this.root = null;
   }
 
-  insert() {
-
+  insert(val, otherStuff) {
+    const newNode = new Node(val, otherStuff);
+    if (!this.root) {
+      this.root = newNode;
+    } else {
+      let cursor = this.root;
+      while (true) {
+        if (val > cursor.value) {
+          if (!cursor.right) {
+            cursor.right = newNode;
+            return this;
+          }
+          cursor = cursor.right;
+          continue;
+        } else if (val < cursor.value) {
+          if (!cursor.left) {
+            cursor.left = newNode;
+            return this;
+          }
+          cursor = cursor.left;
+          continue;
+        }
+        return 'Sorry but you tried to insert a value equal to a previously inserted value. no no.'
+      }
+    }
   }
 
-  find() {
+  find(val) {
+    if (!this.root) return undefined;
+    let cursor = this.root;
+    while (true) {
+      if (val === cursor.value) return cursor;
+      if (val > cursor.value) {
+        if (!cursor.right) return undefined;
+        cursor = cursor.right;
+      } else if (val < cursor.value) {
+        if (!cursor.left) return undefined;
+        cursor = cursor.left;
+      }
+    }
+  }
 
+  contains(val) {
+    if (!this.root) return false;
+    let cursor = this.root;
+    while (true) {
+      if (val === cursor.value) return true;
+      if (val > cursor.value) {
+        if (!cursor.right) return false;
+        cursor = cursor.right;
+      } else if (val < cursor.value) {
+        if (!cursor.left) return false;
+        cursor = cursor.left;
+      }
+    }
   }
 }
 
 const tree = new BinarySearchTree();
 
 
+tree.insert(9, 'Me and you');
+tree.insert(25, 'You and me');
+tree.insert(2, 'Both of us');
+tree.insert(20, 'Together');
+
+
+console.log(tree.find(25).otherStuff);
