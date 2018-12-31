@@ -104,14 +104,73 @@
     a lot of nodes, each with only a few connections.
 */
 
-// It's an adjacency list
+
+// methods will take "v" arguments as shorthand for "vertex"
 class Graph {
   constructor() {
-    this.adjacencyList = {};
+    // this.data is just an adjacency list
+    this.data = {};
   }
 
-  addVertex(vertexName) {
-    this.adjacencyList[vertexName] = [];
+  addVertex(vName) {
+    if (!this.data[vName]) {
+      this.data[vName] = [];
+    }
+  }
+
+  addEdge(v1, v2) {
+    this.data[v1].push(v2);
+    // if we're making a directed graph, we would skip the next line
+    this.data[v2].push(v1);
+  }
+
+  removeEdge(v1, v2) {
+    // reassign the key of v1 to be an array that does not contain v2
+    this.data[v1] = this.data[v1].filter(v => v !== v2);
+    // ...and vice versa
+    this.data[v2] = this.data[v2].filter(v => v !== v1);
+  }
+
+  removeVertex(vToRemove) {
+    // MY FIRST SOLUTION
+    // this.data = Object.keys(this.data).reduce((a, key) => {
+    //   if (key !== vToRemove) {
+    //     a[key] = this.data[key].filter(v => v !== vToRemove);
+    //   }
+    //   return a;
+    // }, {});
+    // MY SECOND SOLUTION
+    // const verticies = Object.keys(this.data);
+    // let i, vertex;
+    // for (i = 0; i < verticies.length; i++) {
+    //   vertex = verticies[i];
+    //   this.removeEdge(vToRemove, vertex);
+    // }
+    // delete this.data[vToRemove];
+    // COLT STEELS MORE EFFICIENT SOLUTION (not iterating through whole this.data)
+    let adjacentVertex;
+    while (this.data[vToRemove].length) {
+      adjacentVertex = this.data[vToRemove].pop();
+      this.removeEdge(vToRemove, adjacentVertex);
+    }
+    delete this.data[vToRemove];
   }
 
 }
+
+const g = new Graph();
+
+g.addVertex('Hong Kong');
+g.addVertex('Tokyo');
+g.addVertex('New York');
+g.addVertex('Miami');
+g.addVertex('Boston');
+
+g.addEdge('Tokyo', 'Hong Kong');
+g.addEdge('Tokyo', 'Miami');
+g.addEdge('Boston', 'New York');
+g.addEdge('Boston', 'Tokyo');
+g.addEdge('Miami', 'Hong Kong');
+
+
+console.table(g);
