@@ -16,10 +16,16 @@
     - A binary heap is as compact as possible:
       - All the children of each node are as full as they can be
       - child nodes are filled out left to right
+      - child nodes are filled out left to right
 
   WHY SHOULD WE KNOW ABOUT HEAPS:
   - We will use a Binary Heap to implement a Priority Queue
   - They are used in Graph Traversal algorithms
+
+  BIG O Of (min and max) BINARY HEAPS: 
+  - Insertion O(log n)
+  - Removal O(log n)
+  - Search O(n)
   
 */
 
@@ -63,33 +69,6 @@ class MaxBinaryHeap {
       parentIndex = Math.floor((elementIndex - 1) / 2); // calculate the next "parentIndex".
     }
   }
-
-  /*
-    Removing the maximum value in a max binary heap:
-    - useful in a priority queue
-    Remove from the root
-    Replace with the most recently added
-    Adjust (sink down)
-     - the procedure for deleting the root from the heap
-       (effectively extracting the maximum element in a max-heap
-        or the minimum element in a min-heap) and restoring the
-        properties
-     - also known as: bubble-down, percolate-down, sift-down
-                      trickle down, heapify-down, cascade-down
-                      extract-min/max
-    STEPS:
-    - Swap the first value in this.values with the last one
-    - Pop from this.values so you can return the value at the end
-    - Have the new root "sink down" to the correct spot
-        - Your parent index starts at 0 (the root)
-        - Find the index of the left child (make sure it's not out of bounds)
-        - Find the index of the right child (make sure it's not out of bounds)
-        - If the left or right child is greater than the element, swap. If
-          both left and right children are larger, swap with the largest child
-        - The child index you swapped to now becomes the new parent index
-        - Keep looping and swapping until neither child is larger than the element
-        - Return the old root
-  */
  /*
     JAN 10 EXTRACT MAX NOTES
 
@@ -132,7 +111,7 @@ class MaxBinaryHeap {
 
   sinkDown() {
     const length = this.values.length; // Keep this for quick reference when checking if left and right child indexes are in range.
-    const rootToSink = this.values[0]; // Keep this for quick reference when checking agianst the values of left and right children.
+    const valueToSink = this.values[0]; // The value of the element taken from the end and put at the beginning; the value to sink down.
     let parentIndex = 0; // The value at this index was just popped off of the end of this.values and plopped at the beginning.
     let leftChildIdx, rightChildIdx, leftChild, rightChild, swap;
     while (true) { // As long as we don't explicitly break out of this loop...
@@ -141,14 +120,14 @@ class MaxBinaryHeap {
       swap = null; // Use this later to check if a swap has occured.
       if (leftChildIdx < length) { // If leftChildIdx is within the range of this.values...
         leftChild = this.values[leftChildIdx]; // store the value at leftChildIdx in leftChild.
-        if (leftChild > rootToSink) { // If that value is greater than that of the element we are sinking...
+        if (leftChild > valueToSink) { // If that value is greater than that of the element we are sinking...
           swap = leftChildIdx; // store leftChildIdx in swap.
         }
       } 
       if (rightChildIdx < length) { // If rightChildIdx is within range...
         rightChild = this.values[rightChildIdx]; // store the value at rightChildIdx in rightChild.
         if (
-            (!swap && rightChild > rootToSink) || // If swap has not been set to leftChildIdx AND rightChild is greater than rootToSink...
+            (!swap && rightChild > valueToSink) || // If swap has not been set to leftChildIdx AND rightChild is greater than valueToSink...
             (swap && rightChild > leftChild)      // OR, swap has been set to leftChildIdx AND rightChild is greater than leftChild...
           ) {
             swap = rightChildIdx; // store rightChildIdx in swap.
@@ -157,8 +136,8 @@ class MaxBinaryHeap {
       if (!swap) break; // If swap is still null, no swap took place. The root we are sinking is in a valid position. Break!
                                                     // Otherwise... 
       this.values[parentIndex] = this.values[swap]; // Set the value at parentIndex = the value at the index stored in swap.
-      this.values[parentIndex] = rootToSink; // 
-      parentIndex = swap;
+      this.values[swap] = valueToSink; // Set the value at whichever childIndex is stored in swap = the value of the element we are sinking down.
+      parentIndex = swap; // Set parentIndex = the index stored in swap.
     }
   }
 
@@ -177,6 +156,8 @@ heap.insert(55);
 console.log(heap.values);
 console.log(heap.extractMax())
 console.log(heap.values);
+
+
 
 /*
   WHAT IS A PRIORITY QUEUE
@@ -218,7 +199,7 @@ class PriorityQueue {
     while (idx > 0) {
       let parentIdx = Math.floor((idx - 1) / 2);
       let parent = this.values[parentIdx];
-      if (element.priority <= parent.priority) break;
+      if (element.priority >= parent.priority) break; // The >= (as opposed to <=) makes this a minBinaryHeap
       this.values[parentIdx] = element;
       this.values[idx] = parent;
       idx = parentIdx;
@@ -226,13 +207,13 @@ class PriorityQueue {
   }
 
   dequeue() {
-    const max = this.values[0];
+    const min = this.values[0];
     const end = this.values.pop();
     if (this.values.length) {
       this.values[0] = end;
       this.sinkDown();
     }
-    return max;
+    return min;
   }
 
   sinkDown() {
@@ -246,15 +227,15 @@ class PriorityQueue {
       let swap = null;
       if (leftChildIdx < length) {
         leftChild = this.values[leftChildIdx];
-        if (leftChild.priority > element.priority) {
+        if (leftChild.priority < element.priority) { // The < (as opposed to >) makes this a minBinaryHeap
           swap = leftChildIdx;
         }
       } 
-      if (rightChildIdx < length) {
+      if (rightChildIdx < length) { 
         rightChild = this.values[rightChildIdx];
         if (
-            (!swap && rightChild.priority > element.priority) || 
-            (swap && rightChild.priority > leftChild.priority)
+            (!swap && rightChild.priority < element.priority) || // The <(as opposed to >) makes this a minBinaryHeap
+            (swap && rightChild.priority < leftChild.priority) // The < (as opposed to >) makes this a minBinaryHeap
           ) {
             swap = rightChildIdx;
         }
@@ -273,7 +254,4 @@ ER.enqueue('common cold', 1);
 ER.enqueue('gunshot wound', 5);
 ER.enqueue('high fever', 2);
 
-// console.log(ER);
-// ER.dequeue();
-
-// INCOMPLETE
+console.log(ER);
